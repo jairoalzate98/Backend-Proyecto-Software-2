@@ -4,7 +4,7 @@ var router = express.Router();
 const investment5 = require('../models/investment5');
 
 router.get('/', (req, res) => {
-    investment4.find({}, (err, inv) => {
+    investment5.find({}, (err, inv) => {
         if(err){
             return res.status(500).send("Error al realizar la peticion");
         } 
