@@ -36,6 +36,7 @@ router.post('/add', (req, res) => {
         invest.Nodeproductosporfacultad = prueba[i].Nodeproductosporfacultad;
         invest.Noproductosporgrupo = prueba[i].Noproductosporgrupo;
         invest.TABLA = prueba[i].TABLA;
+        invest.Tipodeproducto = prueba[i].Tipodeproducto;
 
         invest.save((err, investStored) => {
             if(err){

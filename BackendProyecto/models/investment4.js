@@ -17,6 +17,7 @@ var investment4Schema = schema({
     SMMLV: {type: String, default: ""},
     Nodeproductosporfacultad: {type: Number, default: 0},
     Noproductosporgrupo:{type: Number, default: 0},
+    Tipodeproducto: String,
     TABLA: String
 });
 
