@@ -18,9 +18,9 @@ router.get('/', (req, res) => {
 router.post('/add', (req, res) => {
     let prueba = req.body;
     for(var i = 0; i < prueba.length; i++){
-        let invest = new Investment();
-        invest.facultad = prueba[i].facultad;
-        invest.grupo = prueba[i].grupo;
+        let invest = new investment4();
+        invest.Facultad = prueba[i].Facultad;
+        invest.Grupo = prueba[i].Grupo;
         invest.NoProductos = prueba[i].NoProductos;
         invest.Publindex = prueba[i].Publindex;
         invest.SJRoJCR = prueba[i].SJRoJCR;
@@ -29,6 +29,13 @@ router.post('/add', (req, res) => {
         invest.NoSalarios = prueba[i].NoSalarios;
         invest.Valor = prueba[i].Valor;
         invest.GrupLAC = prueba[i].GrupLAC;
+        invest.Observaciones = prueba[i].Observaciones;
+        invest.Distribucion = prueba[i].Distribucion;
+        invest.SMMLV = prueba[i].SMMLV;
+        invest.Tipodeproducto = prueba[i].Tipodeproducto;
+        invest.Nodeproductosporfacultad = prueba[i].Nodeproductosporfacultad;
+        invest.Noproductosporgrupo = prueba[i].Noproductosporgrupo;
+        invest.TABLA = prueba[i].TABLA;
 
         invest.save((err, investStored) => {
             if(err){

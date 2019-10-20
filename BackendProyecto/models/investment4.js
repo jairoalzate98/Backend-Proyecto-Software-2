@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 
 var investment4Schema = schema({
-    facultad: String,
-    grupo: String,
-    NoProductos: {type: Number, default: 0},
+    Facultad: String,
+    Grupo: String,
+    Noproductos: {type: Number, default: 0},
     Publindex: {type: String, default: ""},
     SJRoJCR: {type: String, default: ""},
     Nombredeproducto: {type: String, default: ""},
@@ -15,6 +15,8 @@ var investment4Schema = schema({
     Observaciones: {type: String, default: ""},
     Distribución: {type: String, default: ""},
     SMMLV: {type: String, default: ""},
+    Nodeproductosporfacultad: {type: Number, default: 0},
+    Noproductosporgrupo:{type: Number, default: 0},
     TABLA: String
 });
 
