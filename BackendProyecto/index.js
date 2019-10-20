@@ -10,6 +10,7 @@ const investment5Router = require('./routes/investment5');
 const investment6Router = require('./routes/investment6');
 const formation1Router = require('./routes/formation1');
 const formation2Router = require('./routes/formation2');
+const formation3Router = require('./routes/formation3');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -38,3 +39,4 @@ app.use('/investment5', investment5Router);
 app.use('/investment6', investment6Router);
 app.use('/formation1', formation1Router);
 app.use('/formation2', formation2Router);
+app.use('/formation3', formation3Router);
