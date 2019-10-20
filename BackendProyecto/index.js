@@ -5,7 +5,8 @@ var app = express();
 
 const port = process.env.PORT || 3001;
 const investmentRouter = require('./routes/investment');
-const investment4Ruter = require('./routes/investment4');
+const investment4Router = require('./routes/investment4');
+const investment5Router = require('./routes/investment5');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -29,4 +30,5 @@ mongoose.connect('mongodb://localhost:27017/proyecto', {useUnifiedTopology: true
 });
 
 app.use('/investment', investmentRouter);
-app.use('/investment4', investment4Ruter);
+app.use('/investment4', investment4Router);
+app.use('/investment5', investment5Router);
