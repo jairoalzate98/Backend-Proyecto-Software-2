@@ -15,6 +15,7 @@ const capacity1Router = require('./routes/capacity1');
 const capacity2Router = require('./routes/capacity2');
 const capacity2_1Router = require('./routes/capacity2_1');
 const pb1Router = require('./routes/bibliographicProduction1');
+const pb3Router = require('./routes/bibliographicProduction3');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -48,3 +49,4 @@ app.use('/capacity1', capacity1Router);
 app.use('/capacity2', capacity2Router);
 app.use('/capacity2.1', capacity2_1Router);
 app.use('/pb1', pb1Router);
+app.use('/pb3', pb3Router);
