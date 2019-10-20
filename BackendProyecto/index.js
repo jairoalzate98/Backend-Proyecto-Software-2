@@ -8,6 +8,7 @@ const investmentRouter = require('./routes/investment');
 const investment4Router = require('./routes/investment4');
 const investment5Router = require('./routes/investment5');
 const investment6Router = require('./routes/investment6');
+const formation1Router = require('./routes/formation1');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -34,3 +35,4 @@ app.use('/investment', investmentRouter);
 app.use('/investment4', investment4Router);
 app.use('/investment5', investment5Router);
 app.use('/investment6', investment6Router);
+app.use('/formation1', formation1Router);
