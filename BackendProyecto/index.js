@@ -12,6 +12,7 @@ const formation1Router = require('./routes/formation1');
 const formation2Router = require('./routes/formation2');
 const formation3Router = require('./routes/formation3');
 const capacity1Router = require('./routes/capacity1');
+const capacity2Router = require('./routes/capacity2');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -42,3 +43,4 @@ app.use('/formation1', formation1Router);
 app.use('/formation2', formation2Router);
 app.use('/formation3', formation3Router);
 app.use('/capacity1', capacity1Router);
+app.use('/capacity2', capacity2Router);
