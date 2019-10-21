@@ -66,7 +66,6 @@ async function sendData(req, res){
             for(var i = 0; i < inv.length; i++){
                 value += inv[i].Valor;
             }
-            console.log(inv.length);
             data.push({'Anio': element,  'Total': value});
             value = 0;
         });
