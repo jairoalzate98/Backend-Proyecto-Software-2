@@ -4,7 +4,7 @@ var schema = mongoose.Schema;
 var investment4Schema = schema({
     Facultad: String,
     Grupo: String,
-    Noproductos: {type: Number, default: 0},
+    Noproductos: Number,
     Publindex: {type: String, default: ""},
     SJRoJCR: {type: String, default: ""},
     Nombredeproducto: {type: String, default: ""},

@@ -21,7 +21,7 @@ router.post('/add', (req, res) => {
         let invest = new investment4();
         invest.Facultad = prueba[i].Facultad;
         invest.Grupo = prueba[i].Grupo;
-        invest.NoProductos = prueba[i].NoProductos;
+        invest.Noproductos = prueba[i].Noproductos;
         invest.Publindex = prueba[i].Publindex;
         invest.SJRoJCR = prueba[i].SJRoJCR;
         invest.Nombredeproducto = prueba[i].Nombredeproducto;
@@ -47,5 +47,99 @@ router.post('/add', (req, res) => {
     }
     res.send('ok');
 });
+
+router.post('/getData', (req, res) => {
+    sendData(req, res);
+});
+
+async function sendData(req, res){
+    var faculty = req.body.facultyId;
+    var facu = getFaculty(faculty);
+    let data = [];
+    investment4.find({"Facultad": facu}, async function (err, inv) {
+        if(err){
+             return res.status(500).send("Error al realizar la peticion");
+        } 
+        if(!inv) {
+            return res.status(404).send("No hay datos");
+        }
+        for(var i = 0; i < inv.length; i++){
+            if(!verifyGroup(data, inv[i].Grupo)){
+                data.push(inv[i].Grupo);
+            }
+        }
+    });
+    await resolveAfter10Seconds(10);
+    makeReport(data, facu, res);
+}
+
+async function makeReport(data, facu, res){
+    let report = [];
+    let value = 0;
+    let productNumber = 0;
+    data.forEach(function (element) {
+        investment4.find({"Facultad": facu, "Grupo": element}, function (err, inv) {
+            if(err){
+                 return res.status(500).send("Error al realizar la peticion");
+            } 
+            if(!inv) {
+                return res.status(404).send("No hay datos");
+            }
+            for(var i = 0; i < inv.length; i++){
+                value += inv[i].Valor;
+                productNumber += inv[i].Noproductos ;
+            }
+            report.push({"Grupo": element, "Numero de elementos": productNumber, "Valor": value});
+            value = 0;
+            productNumber = 0;
+        });
+    });
+    await resolveAfter10Seconds(10);
+    res.send(report);
+}
+
+function verifyGroup(data, type){
+    for(var i = 0; i < data.length; i++){
+        if(data[i].Grupo == type){
+            return true;
+        }
+    }
+    return false;
+}
+
+function resolveAfter10Seconds(x) { 
+    return new Promise(resolve => {
+        setTimeout(() => {
+        resolve(x);
+    }, 6000);
+    });
+}
+
+function getFaculty(fac){
+    switch(fac){
+        case 1:
+            return "Ciencias";
+        case 2:
+            return "Agropecuarias";
+        case 3:
+            return "Educación";
+        case 4:
+            return "CIENCIAS DE LA SALUD";
+        case 5:
+            return "Economicas";
+        case 6:
+            return "DERECHO Y CIENCIAS  SOCIALES";
+        case 7:
+            return "FESAD";
+        case 8:
+            return "INGENIERIA";
+        case 9:
+            return "SECCIONAL CHIQUINQUIRA";
+        case 10:
+            return "Duitama";
+        case 11:
+            return "Sogamoso";
+    }
+}
 
 module.exports = router;
