@@ -87,7 +87,11 @@ async function makeReport(data, facu, res){
             }
             for(var i = 0; i < inv.length; i++){
                 value += inv[i].Valor;
-                productNumber += inv[i].Noproductos ;
+                if(facu == 'FESAD'){
+                    productNumber += inv[i].Noproductosporgrupo;
+                }else {
+                    productNumber += inv[i].Noproductos ;
+                }
             }
             report.push({"Grupo": element, "Numero de elementos": productNumber, "Valor": value});
             value = 0;
