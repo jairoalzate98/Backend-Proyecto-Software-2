@@ -98,14 +98,6 @@ async function I01(req, res){
     res.send(data);
 }
 
-function resolveAfter10Seconds(x) { 
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(x);
-      }, 10000);
-    });
-  }
-
 async function I02(req, res){
     var faculty = req.body.facultyId;
     var type = req.body.menuId;
@@ -187,6 +179,17 @@ function compareDate(str1){
     var yr1   = parseInt(str1.substring(6,10));
     var date1 = new Date(yr1, mon1-1, dt1);
     return date1;
-    }
+}
+
+
+
+function resolveAfter10Seconds(x) { 
+    return new Promise(resolve => {
+        setTimeout(() => {
+        resolve(x);
+    }, 10000);
+});
+
+}
 
 module.exports = router;
