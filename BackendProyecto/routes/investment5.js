@@ -72,27 +72,27 @@ async function sendData(req, res){
 
 function getFaculty(fac){
     switch(fac){
-        case 1:
+        case '1':
             return "Ciencias";
-        case 2:
+        case '2':
             return "Ciencias Agropecuarias";
-        case 3:
+        case '3':
             return "Ciencias de la Educación";
-        case 4:
+        case '4':
             return "CIENCIAS DE LA SALUD";
-        case 5:
+        case '5':
             return "Ciencias Economicas y administrativas";
-        case 6:
+        case '6':
             return "Derecho y Ciencias Sociales";
-        case 7:
+        case '7':
             return "Estudios a Distancia";
-        case 8:
+        case '8':
             return "INGENIERIA";
-        case 9:
+        case '9':
             return "Chiquinquirá";
-        case 10:
+        case '10':
             return "Duitama";
-        case 11:
+        case '11':
             return "Sogamoso";
     }
 }

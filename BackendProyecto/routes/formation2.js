@@ -103,27 +103,27 @@ function verifyProgram(data, type){
 
 function getFaculty(fac){
     switch(fac){
-        case 1:
+        case '1':
             return "CIENCIAS";
-        case 2:
+        case '2':
             return "CIENCIAS AGROPECUARIAS";
-        case 3:
+        case '3':
             return "CIENCIAS DE LA EDUCACION";
-        case 4:
+        case '4':
             return "Ciencias de la salud";
-        case 5:
+        case '5':
             return "CIENCIAS ECONOMICAS Y ADMINISTRATIVAS";
-        case 6:
+        case '6':
             return "DERECHO Y CIENCIAS  SOCIALES";
-        case 7:
+        case '7':
             return "Estudios a Distancia";
-        case 8:
+        case '8':
             return "INGENIERIA";
-        case 9:
+        case '9':
             return "SECCIONAL CHIQUINQUIRA";
-        case 10:
+        case '10':
             return "SECCIONAL DUITAMA";
-        case 11:
+        case '11':
             return "SECCIONAL SOGAMOSO";
     }
 }

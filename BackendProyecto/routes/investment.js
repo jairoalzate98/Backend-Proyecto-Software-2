@@ -80,6 +80,7 @@ async function I01(req, res){
     var years = [2014, 2015, 2016, 2017, 2018];
     var types = ['CAPITAL SEMILLA', 'CONTRAPARTIDA', 'SIN FINANCIACION'];
     let data = [];
+    console.log(facu, type, faculty);
     types.forEach(function (elementType) {
         years.forEach(function(element) {
             Investment.find({"FACULTAD": facu, "TABLA": type, ANIOEJECUCION: element,TIPOFINANCIACION: elementType}, function (err, inv) {
@@ -95,6 +96,7 @@ async function I01(req, res){
         data = [];
     });
     await resolveAfter10Seconds(10);
+    console.log(data);
     res.send(data);
 }
 
@@ -148,27 +150,27 @@ function I03(){
 */
 function getFaculty(fac){
     switch(fac){
-        case 1:
+        case '1':
             return "CIENCIAS";
-        case 2:
+        case '2':
             return "CIENCIAS AGROPECUARIAS";
-        case 3:
+        case '3':
             return "CIENCIAS DE LA EDUCACION";
-        case 4:
+        case '4':
             return "CIENCIAS DE LA SALUD";
-        case 5:
+        case '5':
             return "CIENCIAS ECONOMICAS Y ADMINISTRATIVAS";
-        case 6:
+        case '6':
             return "DERECHO Y CIENCIAS  SOCIALES";
-        case 7:
+        case '7':
             return "ESTUDIOS A DISTANCIA";
-        case 8:
+        case '8':
             return "INGENIERIA";
-        case 9:
+        case '9':
             return "SECCIONAL CHIQUINQUIRA";
-        case 10:
+        case '10':
             return "SECCIONAL DUITAMA";
-        case 11:
+        case '11':
             return "SECCIONAL SOGAMOSO";
     }
 }
