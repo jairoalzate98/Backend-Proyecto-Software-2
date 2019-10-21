@@ -74,7 +74,6 @@ async function sendData(req, res){
 
 async function makeReport(data, facu, res){
     var years = [2014, 2015, 2016, 2017, 2018];
-    let value = 0;
     let report = [];
     years.forEach(function(elementYear) {
         data.forEach(function(element) {
@@ -105,27 +104,27 @@ function verifyProgram(data, type){
 function getFaculty(fac){
     switch(fac){
         case 1:
-            return "Ciencias";
+            return "CIENCIAS";
         case 2:
             return "CIENCIAS AGROPECUARIAS";
         case 3:
-            return "Ciencias de la Educación";
+            return "CIENCIAS DE LA EDUCACION";
         case 4:
             return "Ciencias de la salud";
         case 5:
-            return "Ciencias Economicas y administrativas";
+            return "CIENCIAS ECONOMICAS Y ADMINISTRATIVAS";
         case 6:
-            return "Derecho y Ciencias Sociales";
+            return "DERECHO Y CIENCIAS  SOCIALES";
         case 7:
             return "Estudios a Distancia";
         case 8:
             return "INGENIERIA";
         case 9:
-            return "Chiquinquira";
+            return "SECCIONAL CHIQUINQUIRA";
         case 10:
-            return "Duitama";
+            return "SECCIONAL DUITAMA";
         case 11:
-            return "Sogamoso";
+            return "SECCIONAL SOGAMOSO";
     }
 }
 
