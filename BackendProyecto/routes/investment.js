@@ -63,148 +63,97 @@ router.post('/add', (req, res) => {
 });
 
 router.post('/getData', (req, res) => {
-    let fac = req.body.facultyId;
-    let typ = req.body.menuId;
-    let facu = getFaculty(fac);
-    Investment.find({"FACULTAD": facu, "TABLA": typ}, (err, inv) => {
-        if(err){
-            return res.status(500).send("Error al realizar la peticion");
-        } 
-        if(!inv) {
-            return res.status(404).send("No hay datos");
-        }
-        if(typ == 'I01'){
-            makeReport(inv, res);
-        }else if(typ == 'I02'){
-            makeReport2(inv, res);
-        }
-    });
+    var type = req.body.menuId;
+    if(type == 'I01'){
+        I01(req, res);
+    }else if(type == 'I02'){
+        I02(req, res);
+    }else if(type == 'I03'){
+        I03(req, res);
+    }
 });
 
-function makeReport2(inv, res){
-    var mesi2014 = 0;
-    var mefi2014 = 0;
-    var mex2014 = 0;
-    var mesi2015 = 0;
-    var mefi2015 = 0;
-    var mex2015 = 0;
-    var mesi2016 = 0;
-    var mefi2016 = 0;
-    var mex2016 = 0;
-    var mesi2017 = 0;
-    var mefi2017 = 0;
-    var mex2017 = 0;
-    var mesi2018 = 0;
-    var mefi2018 = 0;
-    var mex2018 = 0;
-    for(var i = 0; i < inv.length; i++){
-        if(inv[i].ANIOEJECUCION == 2014){
-            mesi2014 += inv[i].MONTOESPECIEINTERNO;
-            mefi2014 += inv[i].MONTOEFECTIVOINTERNO;
-            mex2014 += inv[i].MONTOEXTERNO1;
-        }else if(inv[i].ANIOEJECUCION == 2015){
-            mesi2015 += inv[i].MONTOESPECIEINTERNO;
-            mefi2015 += inv[i].MONTOEFECTIVOINTERNO;
-            mex2015 += inv[i].MONTOEXTERNO1;
-        }else if(inv[i].ANIOEJECUCION == 2016){
-            mesi2016 += inv[i].MONTOESPECIEINTERNO;
-            mefi2016 += inv[i].MONTOEFECTIVOINTERNO;
-            mex2016 += inv[i].MONTOEXTERNO1;
-        }else if(inv[i].ANIOEJECUCION == 2017){
-            mesi2017 += inv[i].MONTOESPECIEINTERNO;
-            mefi2017 += inv[i].MONTOEFECTIVOINTERNO;
-            mex2017 += inv[i].MONTOEXTERNO1;
-        }else if(inv[i].ANIOEJECUCION == 2018){
-            mesi2018 += inv[i].MONTOESPECIEINTERNO;
-            mefi2018 += inv[i].MONTOEFECTIVOINTERNO;
-            mex2018 += inv[i].MONTOEXTERNO1;
-        }
-    }
-    res.send([{'anio': '2014', 'tipo': 'MONTO ESPECIE INTERNO', 'Total': mesi2014},
-             {'anio': '2014', 'tipo': 'MONTO EFECTIVO INTERNO', 'Total': mefi2014},
-             {'anio': '2014', 'tipo': 'MONTO EXTERNO', 'Total': mex2014},
-             {'anio': '2015', 'tipo': 'MONTO ESPECIE INTERNO', 'Total': mesi2015},
-             {'anio': '2015', 'tipo': 'MONTO EFECTIVO INTERNO', 'Total': mefi2015},
-             {'anio': '2015', 'tipo': 'MONTO EXTERNO', 'Total': mex2015},
-             {'anio': '2016', 'tipo': 'MONTO ESPECIE INTERNO', 'Total': mesi2016},
-             {'anio': '2016', 'tipo': 'MONTO EFECTIVO INTERNO', 'Total': mefi2016},
-             {'anio': '2016', 'tipo': 'MONTO EXTERNO', 'Total': mex2016},
-             {'anio': '2017', 'tipo': 'MONTO ESPECIE INTERNO', 'Total': mesi2017},
-             {'anio': '2017', 'tipo': 'MONTO EFECTIVO INTERNO', 'Total': mefi2017},
-             {'anio': '2017', 'tipo': 'MONTO EXTERNO', 'Total': mex2017},
-             {'anio': '2018', 'tipo': 'MONTO ESPECIE INTERNO', 'Total': mesi2018},
-             {'anio': '2018', 'tipo': 'MONTO EFECTIVO INTERNO', 'Total': mefi2018},
-             {'anio': '2018', 'tipo': 'MONTO EXTERNO', 'Total': mex2018}
-             ])
+async function I01(req, res){
+    var faculty = req.body.facultyId;
+    var type = req.body.menuId;
+    var facu = getFaculty(faculty);
+    var years = [2014, 2015, 2016, 2017, 2018];
+    var types = ['CAPITAL SEMILLA', 'CONTRAPARTIDA', 'SIN FINANCIACION'];
+    let data = [];
+    types.forEach(function (elementType) {
+        years.forEach(function(element) {
+            Investment.find({"FACULTAD": facu, "TABLA": type, ANIOEJECUCION: element,TIPOFINANCIACION: elementType}, function (err, inv) {
+                if(err){
+                    return res.status(500).send("Error al realizar la peticion");
+                } 
+                if(!inv) {
+                    return res.status(404).send("No hay datos");
+                }
+                data.push({'Anio': element, 'Tipo': elementType, 'Total': inv.length/2});
+            });
+        });
+        data = [];
+    });
+    await resolveAfter10Seconds(10);
+    res.send(data);
 }
 
-function makeReport(inv, res){
-    var capSem2014 = 0;
-    var capSem2015 = 0;
-    var capSem2016 = 0;
-    var capSem2017 = 0;
-    var capSem2018 = 0;
-    var cont2018 = 0;
-    var cont2017 = 0;
-    var cont2016 = 0;
-    var cont2015 = 0; 
-    var cont2014 = 0;
-    var sinfin2014 = 0;
-    var sinfin2015 = 0;
-    var sinfin2016 = 0;
-    var sinfin2017 = 0;
-    var sinfin2018 = 0;
-    for(var i = 0; i < inv.length; i++){
-        if(inv[i].ANIOEJECUCION == 2014 && inv[i].TIPOFINANCIACION == 'CAPITAL SEMILLA'){
-            capSem2014++;
-        }else if(inv[i].ANIOEJECUCION == 2015 && inv[i].TIPOFINANCIACION == 'CAPITAL SEMILLA'){
-            capSem2015++;
-        }else if(inv[i].ANIOEJECUCION == 2016 && inv[i].TIPOFINANCIACION == 'CAPITAL SEMILLA'){
-            capSem2016++;
-        }else if(inv[i].ANIOEJECUCION == 2017 && inv[i].TIPOFINANCIACION == 'CAPITAL SEMILLA'){
-            capSem2017++;
-        }else if(inv[i].ANIOEJECUCION == 2018 && inv[i].TIPOFINANCIACION == 'CAPITAL SEMILLA'){
-            capSem2018++;
-        }else if(inv[i].ANIOEJECUCION == 2018 && inv[i].TIPOFINANCIACION == 'CONTRAPARTIDA'){
-            cont2018++;
-        }else if(inv[i].ANIOEJECUCION == 2017 && inv[i].TIPOFINANCIACION == 'CONTRAPARTIDA'){
-            cont2017++;
-        }else if(inv[i].ANIOEJECUCION == 2016 && inv[i].TIPOFINANCIACION == 'CONTRAPARTIDA'){
-            cont2016++;
-        }else if(inv[i].ANIOEJECUCION == 2015 && inv[i].TIPOFINANCIACION == 'CONTRAPARTIDA'){
-            cont2015++;
-        }else if(inv[i].ANIOEJECUCION == 2014 && inv[i].TIPOFINANCIACION == 'CONTRAPARTIDA'){
-            cont2014++;
-        }else if(inv[i].ANIOEJECUCION == 2014 && inv[i].TIPOFINANCIACION == 'SIN FINANCIACION'){
-            sinfin2014++;
-        }else if(inv[i].ANIOEJECUCION == 2015 && inv[i].TIPOFINANCIACION == 'SIN FINANCIACION'){
-            sinfin2015++;
-        }else if(inv[i].ANIOEJECUCION == 2016 && inv[i].TIPOFINANCIACION == 'SIN FINANCIACION'){
-            sinfin2016++;
-        }else if(inv[i].ANIOEJECUCION == 2017 && inv[i].TIPOFINANCIACION == 'SIN FINANCIACION'){
-            sinfin2017++;
-        }else if(inv[i].ANIOEJECUCION == 2018 && inv[i].TIPOFINANCIACION == 'SIN FINANCIACION'){
-            sinfin2018++;
-        }
-    }
-    res.send([{'anio': '2014', 'tipo': 'Sin Financiacion', 'Total': sinfin2014},
-             {'anio': '2015', 'tipo': 'Sin Financiacion', 'Total': sinfin2015},
-             {'anio': '2016', 'tipo': 'Sin Financiacion', 'Total': sinfin2016},
-             {'anio': '2017', 'tipo': 'Sin Financiacion', 'Total': sinfin2017},
-             {'anio': '2018', 'tipo': 'Sin Financiacion', 'Total': sinfin2018},
-             {'anio': '2014', 'tipo': 'Contrapartida', 'Total': cont2014},
-             {'anio': '2015', 'tipo': 'Contrapartida', 'Total': cont2015},
-             {'anio': '2016', 'tipo': 'Contrapartida', 'Total': cont2016},
-             {'anio': '2017', 'tipo': 'Contrapartida', 'Total': cont2017},
-             {'anio': '2018', 'tipo': 'Contrapartida', 'Total': cont2018},
-             {'anio': '2014', 'tipo': 'Capital Semilla', 'Total': capSem2014},
-             {'anio': '2015', 'tipo': 'Capital Semilla', 'Total': capSem2015},
-             {'anio': '2016', 'tipo': 'Capital Semilla', 'Total': capSem2016},
-             {'anio': '2017', 'tipo': 'Capital Semilla', 'Total': capSem2017},
-             {'anio': '2018', 'tipo': 'Capital Semilla', 'Total': capSem2018}
-             ])
+function resolveAfter10Seconds(x) { 
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(x);
+      }, 10000);
+    });
+  }
+
+async function I02(req, res){
+    var faculty = req.body.facultyId;
+    var type = req.body.menuId;
+    var facu = getFaculty(faculty);
+    var years = [2014, 2015, 2016, 2017, 2018];
+    let data = [];
+    let species = 0;
+    let cash = 0;
+    let external = 0;
+    years.forEach(function(element) {
+        Investment.find({"FACULTAD": facu, "TABLA": type, ANIOEJECUCION: element}, function (err, inv) {
+             if(err){
+                 return res.status(500).send("Error al realizar la peticion");
+            } 
+            if(!inv) {
+                  return res.status(404).send("No hay datos");
+             }
+            for(var i = 0; i < inv.length; i++){
+                species += inv[i].MONTOESPECIEINTERNO;
+                cash += inv[i].MONTOEFECTIVOINTERNO;
+                external += inv[i].MONTOEXTERNO1;
+            }
+            data.push({'Anio': element, 'Tipo': 'Aporte Especie UPTC', 'Total': species});
+            data.push({'Anio': element, 'Tipo': 'Aporte Eefectivo UPTC', 'Total': cash});
+            data.push({'Anio': element, 'Tipo': 'Aporte externo', 'Total': external});
+            species = 0;
+            cash = 0;
+            external = 0;
+        });
+    });
+    await resolveAfter10Seconds(10);
+    res.send(data);
 }
 
+/*
+function I03(){
+    for(var i = 2014; i < 2019; i ++){
+        Investment.find({"FACULTAD": facu, "TABLA": typ, ANIOEJECUCION: i}, (err, inv) => {
+            if(err){
+                return res.status(500).send("Error al realizar la peticion");
+            } 
+            if(inv.length == 0) {
+                return res.status(404).send("No hay datos");
+            }
+        });
+    }
+}
+*/
 function getFaculty(fac){
     switch(fac){
         case 1:
