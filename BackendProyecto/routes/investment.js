@@ -89,12 +89,12 @@ async function I01(req, res){
                 if(!inv) {
                     return res.status(404).send("No hay datos");
                 }
-                data.push({'Anio': element, 'Tipo': elementType, 'Total': inv.length/2});
+                data.push({'Anio': element, 'Tipo': elementType, 'Total': parseInt(inv.length/2)});
             });
         });
         data = [];
     });
-    await resolveAfter10Seconds(10);
+    await resolveAfter10Seconds(5);
     res.send(data);
 }
 
@@ -171,6 +171,7 @@ async function makeReport(data, facu, res){
         });
     });
     await resolveAfter10Seconds(10);
+    console.log(report);
     res.send(report);
 }
 
