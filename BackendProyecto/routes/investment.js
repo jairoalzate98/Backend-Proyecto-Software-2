@@ -132,20 +132,57 @@ async function I02(req, res){
     res.send(data);
 }
 
-/*
-function I03(){
-    for(var i = 2014; i < 2019; i ++){
-        Investment.find({"FACULTAD": facu, "TABLA": typ, ANIOEJECUCION: i}, (err, inv) => {
-            if(err){
-                return res.status(500).send("Error al realizar la peticion");
-            } 
-            if(inv.length == 0) {
-                return res.status(404).send("No hay datos");
+
+async function I03(req, res){
+    var faculty = req.body.facultyId;
+    var facu = getFaculty(faculty);
+    let data = [];
+    Investment.find({"FACULTAD": facu}, function (err, inv) {
+        if(err){
+            return res.status(500).send("Error al realizar la peticion");
+        } 
+        if(!inv) {
+            return res.status(404).send("No hay datos");
+        }
+        for(var i = 0; i < inv.length; i++){
+            if(!verifyProgram(data, inv[i].TIPODEENTIDAD)){
+                data.push(inv[i].TIPODEENTIDAD);
             }
-        });
-    }
+        }
+    });
+    await resolveAfter10Seconds(10);
+    makeReport(data, facu, res);
 }
-*/
+
+async function makeReport(data, facu, res){
+    var years = [2014, 2015, 2016, 2017, 2018];
+    let report = [];
+    years.forEach(function(elementYear) {
+        data.forEach(function(element) {
+            Investment.find({"FACULTAD": facu, "ANIOEJECUCION": elementYear, "TIPODEENTIDAD": element}, function(err, inv) {
+                if(err){
+                    return res.status(500).send("Error al realizar la peticion");
+                } 
+                if(!inv) {
+                    return res.status(404).send("No hay datos");
+                }
+                report.push({'Anio': elementYear, 'Programa': element, 'Total': inv.length});
+            });
+        });
+    });
+    await resolveAfter10Seconds(10);
+    res.send(report);
+}
+
+function verifyProgram(data, type){
+    for(var i = 0; i < data.length; i++){
+        if(data[i] == type){
+            return true;
+        }
+    }
+    return false;
+}
+
 function getFaculty(fac){
     switch(fac){
         case '1':
