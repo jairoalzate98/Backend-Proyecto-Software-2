@@ -40,4 +40,62 @@ router.post('/add', (req, res) => {
     res.send('ok');
 });
 
+router.post('/getData', (req, res) => {
+    sendData(req, res);
+});
+
+async function sendData(req, res){
+    var facu = getFaculty(req.body.facultyId);
+    var years = [2014, 2015, 2016, 2017, 2018];
+    var data = [];
+    years.forEach(function(element) {
+        pb3.find({'FACULTAD2': facu, 'ANIOPUBLICACION': element}, function(err, inv) {
+            if(err){
+                return res.status(500).send("Error al realizar la peticion");
+            } 
+            if(!inv) {
+                return res.status(404).send("No hay datos");
+            }
+            data.push({'Anio': element, 'Total': inv.length});
+        });
+    });
+    await resolveAfter10Seconds(10);
+    res.send(data);
+}
+
+function getFaculty(fac){
+    switch(fac){
+        case '1':
+            return "CIENCIAS";
+        case '2':
+            return "CIENCIAS AGROPECUARIAS";
+        case '3':
+            return "CIENCIAS DE LA EDUCACION";
+        case '4':
+            return "CIENCIAS DE LA SALUD";
+        case '5':
+            return "CIENCIAS ECONOMICAS Y ADMINISTRATIVAS";
+        case '6':
+            return "DERECHO Y CIENCIAS  SOCIALES";
+        case '7':
+            return "ESTUDIOS A DISTANCIA";
+        case '8':
+            return "INGENIERIA";
+        case '9':
+            return "SECCIONAL CHIQUINQUIRA";
+        case '10':
+            return "SECCIONAL DUITAMA";
+        case '11':
+            return "SECCIONAL SOGAMOSO";
+    }
+}
+
+function resolveAfter10Seconds(x) { 
+    return new Promise(resolve => {
+        setTimeout(() => {
+        resolve(x);
+        }, 5000);
+    });
+}
+
 module.exports = router;
