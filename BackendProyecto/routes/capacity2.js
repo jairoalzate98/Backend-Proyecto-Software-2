@@ -43,4 +43,93 @@ router.post('/add', (req, res) => {
     res.send('ok');
 });
 
+router.post('/getData', (req, res) => {
+    sendData(req, res);
+})
+
+async function sendData(req, res){
+    var faculty = req.body.facultyId;
+    var facu = getFaculty(faculty);
+    let data = [];
+    capacity2.find({"Facultad": facu}, function (err, inv) {
+        if(err){
+            return res.status(500).send("Error al realizar la peticion");
+        } 
+        if(!inv) {
+            return res.status(404).send("No hay datos");
+        }
+        for(var i = 0; i < inv.length; i++){
+            if(!verifyType(data, inv[i].TipoInvestigadorColciencias781_2017)){
+                data.push(inv[i].TipoInvestigadorColciencias781_2017);
+            }
+        }
+    });
+    await resolveAfter10Seconds(10);
+    makeReport(data, facu, res);
+}
+
+async function makeReport(data, facu, res){
+    var years = [2014, 2015, 2016, 2017, 2018];
+    let report = [];
+    years.forEach(function(elementYear) {
+        data.forEach(function(element) {
+            capacity2.find({"Facultad": facu, "Anio": elementYear, "TipoInvestigadorColciencias781_2017": element}, function(err, inv) {
+                if(err){
+                    return res.status(500).send("Error al realizar la peticion");
+                } 
+                if(!inv) {
+                    return res.status(404).send("No hay datos");
+                }
+                report.push({'Anio': elementYear, 'Tipo': element, 'Total': inv.length});
+            });
+        });
+    });
+    await resolveAfter10Seconds(10);
+    res.send(report);
+}
+
+function verifyType(data, type){
+    for(var i = 0; i < data.length; i++){
+        if(data[i] == type){
+            return true;
+        }
+    }
+    return false;
+}
+
+function getFaculty(fac){
+    switch(fac){
+        case '1':
+            return "CIENCIAS";
+        case '2':
+            return "CIENCIAS AGROPECUARIAS";
+        case '3':
+            return "CIENCIAS DE LA EDUCACION";
+        case '4':
+            return "CIENCIAS DE LA SALUD";
+        case '5':
+            return "CIENCIAS ECONOMICAS Y ADMINISTRATIVAS";
+        case '6':
+            return "DERECHO Y CIENCIAS  SOCIALES";
+        case '7':
+            return "ESTUDIOS A DISTANCIA";
+        case '8':
+            return "INGENIERIA";
+        case '9':
+            return "SECCIONAL CHIQUINQUIRA";
+        case '10':
+            return "SECCIONAL DUITAMA";
+        case '11':
+            return "SECCIONAL SOGAMOSO";
+    }
+}
+
+function resolveAfter10Seconds(x) { 
+    return new Promise(resolve => {
+        setTimeout(() => {
+        resolve(x);
+        }, 10000);
+    });
+}
+
 module.exports = router;
