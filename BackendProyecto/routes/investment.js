@@ -80,7 +80,6 @@ async function I01(req, res){
     var years = [2014, 2015, 2016, 2017, 2018];
     var types = ['CAPITAL SEMILLA', 'CONTRAPARTIDA', 'SIN FINANCIACION'];
     let data = [];
-    console.log(facu, type, faculty);
     types.forEach(function (elementType) {
         years.forEach(function(element) {
             Investment.find({"FACULTAD": facu, "TABLA": type, ANIOEJECUCION: element,TIPOFINANCIACION: elementType}, function (err, inv) {
@@ -96,7 +95,6 @@ async function I01(req, res){
         data = [];
     });
     await resolveAfter10Seconds(10);
-    console.log(data);
     res.send(data);
 }
 
