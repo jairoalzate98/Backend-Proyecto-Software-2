@@ -95,6 +95,15 @@ async function I01(req, res){
         data = [];
     });
     await resolveAfter10Seconds(5);
+    data.sort(function(a, b){
+        if(a.Anio > b.Anio){
+            return 1;
+        }else if(a.Anio < b.Anio){
+            return -1;
+        }else{
+            return 0;
+        }
+    });
     res.send(data);
 }
 
@@ -129,6 +138,15 @@ async function I02(req, res){
         });
     });
     await resolveAfter10Seconds(10);
+    data.sort(function(a, b){
+        if(a.Anio > b.Anio){
+            return 1;
+        }else if(a.Anio < b.Anio){
+            return -1;
+        }else{
+            return 0;
+        }
+    });
     res.send(data);
 }
 
@@ -171,7 +189,15 @@ async function makeReport(data, facu, res){
         });
     });
     await resolveAfter10Seconds(10);
-    console.log(report);
+    report.sort(function(a, b){
+        if(a.Anio > b.Anio){
+            return 1;
+        }else if(a.Anio < b.Anio){
+            return -1;
+        }else{
+            return 0;
+        }
+    });
     res.send(report);
 }
 
